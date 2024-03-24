@@ -1,0 +1,369 @@
+---
+title: "Xuting Zhou Kellogg Empirical"
+author: "Xuting Zhou"
+date: "2024-01-25"
+output:
+  html_document:
+    df_print: paged
+  pdf_document:
+    latex_engine: xelatex
+mainfont: Times New Roman
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+setwd("C:/Users/Victoria/OneDrive/学习/Uchicago/Jobs/Kellogg/Xuting Zhou Kellogg Empirical")
+library(readr)
+library(tidyverse)
+library(dplyr)
+library(forecast)
+library(tseries)
+library(xts)
+library(lubridate)
+library(readxl)
+library(ggplot2)
+library(parsedate)
+library(quantmod)
+library(PerformanceAnalytics)
+library(writexl)
+```
+
+
+##################################
+####Question 1.   #####
+##################################
+
+Using the trades.csv file, create a new table that shows the net insider trades for each company over the period January 1 – April 30, 2023. 
+The resulting table should contain:  TICKER and NET_SHARES, defined as:
+
+$$
+\text{NET_SHARES} ≡ (\sum \text{shares acquired} – \sum \text{shares disposed) }
+$$
+Can you think of another, better way to measure insider buying and selling activity over this period? If so, describe how you would measure it, and include that variable in the table too.
+
+
+```{r}
+trades <- read_csv("trades.csv",show_col_types = FALSE)
+# See entries with problem strings and identify the rows
+#table(nchar(trades$trans_date))
+# Parse dates and filter for the range between January 1 and April 30, 2023
+trades_filtered <-trades %>%
+  mutate(trans_date = substr(trans_date, 1, 10)) %>%#remove the time part 
+   mutate(trans_date =parsedate::parse_date(trans_date)) %>% #make them into same format %>%
+  mutate(ticker = replace_na(ticker, "NA_TICKER"))%>% 
+  filter( trans_date >= mdy('1/1/2023'),  
+         trans_date <= mdy('04/30/2023'))%>%
+  mutate(ticker = toupper(ticker))%>% # converts all alphabetical characters in a string to uppercase
+  mutate(ticker = str_replace_all(ticker, "[\\[\\]\\(\\)\"]", ""))#remove special symbols in tickers
+
+write_xlsx(trades_filtered,"trades_filtered_raw.xlsx")
+```
+
+
+```{r}
+#This is the part where I notice there are more unusual tickers. 
+
+trades_filtered <- read_excel("trades_filtered_raw.xlsx")
+# Calculate NET_SHARES for each ticker, including the name
+net_insider_trades <- trades_filtered %>%
+  mutate(shares = as.numeric(shares), 
+         shares = if_else(trans_type == 'A', shares, -shares)) %>% #if_else(condition, true, false)
+  group_by(ticker,CIK) %>%
+  summarise(NET_SHARES = sum(shares, na.rm = TRUE), .groups = 'drop')
+# Identify weird tickers
+weird_tickers <- net_insider_trades %>%
+  mutate(weird_ticker_dummy = as.integer(ticker == "NA_TICKER" | 
+                                          ticker == "N/A" | 
+                                          grepl('\\d', ticker)))%>% 
+  filter(weird_ticker_dummy == 1)
+
+# View the result
+print(weird_tickers)
+```
+
+
+
+Note: As I find some tickers are missing/in wrong format, I would need external source. I used Python and its "sec-cik-mapper" package to download mappings between CIK and ticker data, provided by the SEC. (Please refer to "Xuting Zhou Kellogg Empirical.ipynb" for more detail).If I can find one within the document, I replace the ticker with the correct. If not, I drop the ambiguous ones. 
+```{r}
+#searching unusual tickers by CIK within "CIK_ticker__mappings.csv".
+cik_ticker <- read_csv("CIK_ticker__mappings.csv", show_col_types = FALSE)
+ciks_with_weird_tickers <- weird_tickers%>%
+  distinct(CIK) %>%
+  pull(CIK) #get CIK column from the resulting tibble, converting it into a vector.
+
+matching_tickers <- cik_ticker %>%
+  filter(CIK %in% ciks_with_weird_tickers)
+
+print(matching_tickers)
+```
+
+
+```{r}
+trades_filtered <- trades_filtered %>%
+  mutate(ticker = if_else(CIK == "0001327318", "TRUE", ticker),
+         ticker = if_else(CIK == "0001488775", "CEM", ticker), 
+         ticker = if_else(CIK == "0001556898", "THPTF", ticker), 
+         ticker = if_else(CIK == "0001585389", "SSST", ticker), 
+         ticker = if_else(CIK == "0001600626", "PKST", ticker), 
+         ticker = if_else(CIK == "0001762562", "CPRDX", ticker)) %>%
+  filter(!ticker %in% c("NA_TICKER", "N/A"),) %>%
+   filter(!grepl('\\d', ticker))
+
+
+# Calculate NET_SHARES for each ticker, including the name
+net_insider_trades <- trades_filtered %>%
+  mutate(shares = as.numeric(shares), 
+         shares = if_else(trans_type == 'A', shares, -shares)) %>%
+  group_by(ticker,CIK) %>%
+  summarise(NET_SHARES = sum(shares, na.rm = TRUE), .groups = 'drop')
+
+head(net_insider_trades)
+
+```
+
+
+Another way to analyze insider buying and selling activity is to consider the total value of the transactions, defined as below:
+$$
+\text{total value of the transactions}=\sum \text{price per share}*\text{shares acquired}-\sum \text{price per share}*\text{shares disposed}
+$$
+
+```{r}
+# Calculate NET_SHARES and Total Transaction Value (TTV) for each company
+net_insider_trades <- trades_filtered %>%
+  mutate(
+    shares = as.numeric(shares),
+    price = as.numeric(price),
+    # Exclude transactions with price as 0 or NA from the TTV calculation (note: a zero price might need clarification, particularly to distinguish between a $0 transaction (like a gift) and a potential data error or special case. )
+    transaction_value = if_else(price > 0, shares * price, NA_real_),
+    transaction_value = if_else(trans_type == 'A', transaction_value, -transaction_value)
+  ) %>%
+  group_by(ticker) %>%
+  summarise(
+    NET_SHARES = sum(if_else(trans_type == 'A', shares, -shares), na.rm = TRUE),
+    TTV = sum(transaction_value, na.rm = TRUE)  # Sum of transaction values, excluding NAs
+  )
+
+head(net_insider_trades)
+
+```
+##################################
+####Question 2.   #####
+##################################
+Question 2. Use the stocks_Jan-Nov2023.csv file to visualize cumulative returns for the company Pfizer (TICKER = PFE) over the period February 1 – August 31, 2023. Specifically, produce a line chart showing the value of an investment in Pfizer at the end of each day; assume you started with $10,000 worth of stock bought at the February 1 closing price, and that any dividends are reinvested. Give your chart the title “Value of $10,000 worth of PFE stock over time.”
+
+\textbf{Bonus:} Write your program in a way that would make it easy for you to create a similar chart for a different company, time period, or starting dollar amount.
+```{r}
+stocks_data <- read_csv("stocks_Jan-Nov2023.csv", col_types = cols(date = col_date(format = "%m/%d/%Y")))
+stocks_data <- stocks_data %>%
+  mutate(RET = as.numeric(RET))
+# Check for parsing problems
+parsing_problems <- problems(stocks_data)
+# View the first few parsing problems
+print(head(parsing_problems))
+```
+```{r}
+# Function to create a chart
+create_investment_chart <- function(data, ticker_symbol, start_date, end_date, initial_investment) {
+  # Filter and arrange data
+  company_data <- data %>%
+    filter(TICKER == ticker_symbol, 
+           date >= mdy(start_date), 
+           date <= mdy(end_date)) %>%
+    mutate(date = parsedate::parse_date(date)) %>%
+    arrange(date)
+
+  # Check for NA in date
+  if (any(is.na(company_data$date))) {
+    stop("NA values found in date column after filtering and parsing.")
+  }
+
+  # Calculate investment value
+  company_data <- company_data %>%
+    mutate(cumulative_return = cumprod(1 + RET),
+           investment_value = initial_investment * cumulative_return)
+
+  # Create plot
+  ggplot(company_data, aes(x = date, y = investment_value)) +
+    geom_line() +
+    labs(title = paste("Value of", initial_investment, "worth of", ticker_symbol, "stock over time"),
+         x = "Date",
+         y = "Investment Value ($)") +
+    theme_minimal()+
+    theme(plot.title = element_text(hjust = 0.5)) 
+}
+
+# Create chart for PFE. Here one can replace "PFE" with any company ticker and  "02/01/2023", "08/31/2023" with any start/end date, and "10000" with any initial value invested.
+
+pfe_chart <- create_investment_chart(stocks_data, "AAPL", "02/01/2023", "08/31/2023", 10000)
+
+# Print chart
+print(pfe_chart)
+
+
+```
+##################################
+####Question 3.   #####
+##################################
+Using the stocks_Jan-Nov2023.csv file, calculate the cumulative returns for each company over the period May 1 – November 30, 2023. Again, assume any dividends paid are reinvested.
+
+
+
+
+```{r}
+stocks_filtered <- stocks_data %>%
+  filter(date >= mdy("05/01/2023"), date <= mdy("11/30/2023"), !is.na(RET))
+
+cumulative_return <- stocks_filtered %>%
+  group_by(TICKER, COMNAM) %>%
+  summarise(cumulative_return = (cumprod(1 + RET) - 1)[n()], .groups = 'drop')# selecting the cumulative return at the end of the period covered by the data. 
+
+head(cumulative_return)
+```
+
+Describe the steps you took to test whether these results are accurate.
+
+
+Here I define return to be:
+$$
+cumulative\_return2 = \left( \frac{\text{last}(PRC)}{\text{first}(PRC)} \right) - 1
+$$
+
+```{r}
+
+stocks_filtered <- stocks_data %>%
+  drop_na()%>%
+  filter(date >= mdy("05/01/2023"), date <= mdy("11/30/2023"))
+
+cumulative_return2 <- stocks_filtered %>%
+  group_by(TICKER, COMNAM) %>%
+  summarise(cumulative_return2 = (last(PRC) / first(PRC)) - 1, .groups = 'drop')# selecting the cumulative return at the end of the period covered by the data. 
+head(cumulative_return2)
+
+merged_returns <- inner_join(cumulative_return2, cumulative_return, by = c("TICKER", "COMNAM"))
+
+# Create a new variable for the difference 
+merged_returns <- merged_returns %>%
+  mutate(return_difference = cumulative_return2 - cumulative_return)
+summary(merged_returns$return_difference)
+boxplot(merged_returns$return_difference, main = "Return Difference Boxplot")
+
+interquartile  <- IQR(merged_returns$return_difference,na.rm=TRUE)
+Q1 <- quantile(merged_returns$return_difference, 0.25,na.rm=TRUE)
+Q3 <- quantile(merged_returns$return_difference, 0.75,na.rm=TRUE)
+
+# Calculate the bounds
+lower_bound <- Q1 - 1.5 * interquartile 
+upper_bound <- Q3 + 1.5 * interquartile 
+
+# Identify outliers
+outliers <- subset(merged_returns, return_difference < lower_bound | return_difference > upper_bound)
+
+# View outliers
+head(outliers)
+
+```
+
+```{r}
+#Step 2: obtain external datasource to compare with the original dataset. Use A as an example. 
+
+getSymbols("A", src = "yahoo", from = "2023-05-01", to = "2023-11-30")
+
+# Calculate daily returns
+daily_returns <- Return.calculate(A$A.Adjusted)
+
+# Calculate cumulative return
+cumulative_return <- Return.cumulative(daily_returns, geometric = TRUE)
+
+# Print the cumulative return
+print(cumulative_return)
+```
+
+
+```{r}
+#Step 3: It is also possible to generate a function to check for more companies.
+#library(quantmod) Note: https://www.quantmod.com/examples/intro/
+#library(PerformanceAnalytics)
+
+check_compounded_returns <- function(tickers, start_date, end_date) {
+  results <- data.frame(Ticker = character(), CompoundedReturn = numeric(), stringsAsFactors = FALSE)
+
+  for (ticker in tickers) {
+    # Get stock data
+    tryCatch({
+      stock_data <- getSymbols(ticker, src = "yahoo", from = start_date, to = end_date, auto.assign = FALSE)
+      daily_returns <- na.omit(Return.calculate(Ad(stock_data)))# extracts the adjusted closing prices from the stock_data 
+      compounded_return <- as.numeric(last(cumprod(1 + daily_returns)))
+      results <- rbind(results, data.frame(Ticker = ticker, CompoundedReturn = compounded_return - 1))
+    }, error = function(e){
+      warning("Error retrieving data for ticker: ", ticker, "; Error: ", e$message)
+    })
+  }
+
+  return(results)
+}
+
+# Check the first several returns and compare with the previous ones.
+
+ticker_list <- c("A","AA","AACI","AACT","AADI")
+start_date <- "2023-05-01"
+end_date <- "2023-11-30"
+
+# Calculate compounded returns
+compounded_returns <- check_compounded_returns(ticker_list, start_date, end_date)
+print(compounded_returns)
+
+```
+
+##################################
+####Question 4.   #####
+##################################
+A 10b5-1 plan allows insiders to trade company stock according to a predetermined schedule, which is a way for the executive to show that they were not trading based on insider knowledge. Therefore, some argue that 10b5-1 transactions do not predict future returns.
+Using the footnotes.csv file, create a dummy variable for each transaction found in trades.csv that equals 1 if and only if the transaction was pursuant to a 10(b)5-1 plan. 
+How many 10(b)5-1 transactions did you find during January 1 - April 30, 2023? Please describe any steps you took to check your work for accuracy.
+
+There are 27287 transactions.
+
+
+```{r}
+footnotes <- read.csv("footnotes.csv", stringsAsFactors = FALSE)
+trades <- read_csv("trades.csv",show_col_types = FALSE)
+# Collapse footnotes
+collapsed_footnotes <- footnotes %>%
+  mutate(order = as.numeric(str_extract(index, "\\d$"))) %>%
+  mutate(index2 = str_replace_all(index, "\\d", "")) %>%
+  filter(index2=="nonDerivTrans")%>%
+  group_by(accession_num,order) %>% 
+ summarise(text_combined = paste(text, collapse =" "),.groups = 'drop')
+
+
+# Create the dummy variable for 10b5-1 transactions in the collapsed footnotes
+collapsed_footnotes <- collapsed_footnotes %>%
+  mutate(Is10b5_1 = if_else(grepl("10(b)5-1", text_combined, ignore.case = TRUE), 1, 0))
+
+trades <- trades %>%
+  mutate(trans_date =parsedate::parse_date(trans_date)) %>%
+  mutate(ticker = str_replace_all(ticker, "[\\[\\]\\(\\)\"]", ""))
+
+# Filter trades for the specified period
+trades_filtered <- trades %>%
+  filter(trans_date >= as.Date("2023-01-01") & trans_date <= as.Date("2023-04-30"))
+
+# Perform a left join to retain all rows from trades_filtered
+merged_data <- left_join(trades_filtered, collapsed_footnotes, by = c( "accession_num","order"))
+
+# If no matching footnote is found, assume the transaction is not 10b5-1
+merged_data <- merged_data %>%
+  mutate(dummy_10b5_1 = if_else(is.na(Is10b5_1), 0, Is10b5_1))
+
+# Count the number of 10(b)5-1 transactions in the merged data
+num_10b5_1_transactions <- sum(merged_data$dummy_10b5_1, na.rm = TRUE)
+print(num_10b5_1_transactions)
+
+```
+
+
+
+
