@@ -1,5 +1,5 @@
 ---
-title: "Xuting Zhou Kellogg Empirical"
+title: "Financial Data"
 author: "Xuting Zhou"
 date: "2024-01-25"
 output:
@@ -15,7 +15,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r}
-setwd("C:/Users/Victoria/OneDrive/学习/Uchicago/Jobs/Kellogg/Xuting Zhou Kellogg Empirical")
+setwd("")
 library(readr)
 library(tidyverse)
 library(dplyr)
