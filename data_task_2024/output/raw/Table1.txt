@@ -1,0 +1,48 @@
+\begin{table}[hbt!]
+\caption{Regression Result}
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lcccc}
+\hline \hline
+&(1) &(2)&(3)&(4)\\
+\hline
+main                &                     &                     &                     &                     \\
+Mother years of education&        -.003        &        -.019        &        -.009        &        -.003        \\
+                    &       (.006)        &       (.040)        &       (.023)        &       (.006)        \\
+Child age           &         .090$^{***}$&         .572$^{***}$&         .315$^{***}$&         .090$^{***}$\\
+                    &       (.005)        &       (.074)        &       (.035)        &       (.005)        \\
+Lowest Quartile     &                     &                     &                     &         .000        \\
+                    &                     &                     &                     &          (.)        \\
+Lower Middle Quartile&                     &                     &                     &        -.028        \\
+                    &                     &                     &                     &       (.061)        \\
+Upper Middle Quartile&                     &                     &                     &         .015        \\
+                    &                     &                     &                     &       (.060)        \\
+Highest Quartile    &                     &                     &                     &         .007        \\
+                    &                     &                     &                     &       (.060)        \\
+_cons               &        -.010        &       -3.162$^{***}$&       -1.781$^{***}$&        -.008        \\
+                    &       (.061)        &       (.532)        &       (.286)        &       (.072)        \\
+\hline
+R$^2$               &         .456        &                     &                     &         .457        \\
+Observations        &          297        &          297        &          297        &          297        \\
+\hline \hline
+&(5) &(6)&(7)&(8)\\
+\hline
+Mother years of education&        -.003        &        -.004        &        -.003        &        -.003        \\
+                    &       (.006)        &       (.006)        &       (.006)        &       (.004)        \\
+Child age           &         .090$^{***}$&         .090$^{***}$&         .090$^{***}$&         .090$^{***}$\\
+                    &       (.005)        &       (.005)        &       (.005)        &       (.004)        \\
+Mother age          &         .002        &                     &                     &                     \\
+                    &       (.002)        &                     &                     &                     \\
+Mother num children &                     &         .013        &                     &                     \\
+                    &                     &       (.016)        &                     &                     \\
+Child sex           &                     &                     &         .035        &                     \\
+                    &                     &                     &       (.043)        &                     \\
+_cons               &        -.083        &        -.043        &        -.031        &        -.010        \\
+                    &       (.099)        &       (.071)        &       (.067)        &       (.055)        \\
+\hline
+R$^2$               &         .457        &         .457        &         .457        &         .456        \\
+Observations        &          297        &          297        &          297        &          297        \\
+\hline \hline
+\end{tabular*}
+\footnotesize
+$^{*}$ p$<$0.10, $^{**}$ p$<$0.05, $^{***}$ p$<$0.01\\
+
+\end{table}

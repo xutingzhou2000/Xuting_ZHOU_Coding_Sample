@@ -1,0 +1,529 @@
+{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:/Users/Victoria/OneDrive/文档/GitHub/DIL_task_2024/output/raw/logfile.txt
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}17 Apr 2024, 13:37:44
+{txt}
+{com}. 
+. ************************************************************ End of main do-file
+. {txt}
+{com}. 
+. use "${c -(}data{c )-}/clean/cleaned_data.dta", clear
+{txt}
+{com}. 
+. //drop temp variables
+. drop check_year_temp suspicious_grade_temp
+{txt}
+{com}. 
+. */--------------------------------------------------------------------------------*/
+.     *01. Make a summary table across all the variables in the dataset. 
+. */------------------------------------------------------------------------------*/
+. eststo clear
+{txt}
+{com}. local vlist mother_educ mother_income mother_age mother_yob mother_n_children child_age child_yob child_sex child_grade
+{txt}
+{com}. 
+. eststo all: estpost summarize `vlist', detail
+
+{txt}{space 0}{space 0}{ralign 12:}{space 1}{c |}{space 1}{ralign 9:e(count)}{space 1}{space 1}{ralign 9:e(sum_w)}{space 1}{space 1}{ralign 9:e(mean)}{space 1}{space 1}{ralign 9:e(Var)}{space 1}{space 1}{ralign 9:e(sd)}{space 1}{space 1}{ralign 9:e(skewn~)}{space 1}{space 1}{ralign 9:e(kurto~)}{space 1}{space 1}{ralign 9:e(sum)}{space 1}
+{space 0}{hline 13}{c   +}{hline 11}{hline 11}{hline 11}{hline 11}{hline 11}{hline 11}{hline 11}{hline 11}
+{space 0}{space 0}{ralign 12:mother_educ}{space 1}{c |}{space 1}{ralign 9:{res:{sf:      297}}}{space 1}{space 1}{ralign 9:{res:{sf:      297}}}{space 1}{space 1}{ralign 9:{res:{sf: 9.037037}}}{space 1}{space 1}{ralign 9:{res:{sf: 12.48173}}}{space 1}{space 1}{ralign 9:{res:{sf: 3.532949}}}{space 1}{space 1}{ralign 9:{res:{sf: .1958799}}}{space 1}{space 1}{ralign 9:{res:{sf: 2.846463}}}{space 1}{space 1}{ralign 9:{res:{sf:     2684}}}{space 1}
+{space 0}{space 0}{ralign 12:mother_inc~e}{space 1}{c |}{space 1}{ralign 9:{res:{sf:      297}}}{space 1}{space 1}{ralign 9:{res:{sf:      297}}}{space 1}{space 1}{ralign 9:{res:{sf: 601.2458}}}{space 1}{space 1}{ralign 9:{res:{sf:  2869752}}}{space 1}{space 1}{ralign 9:{res:{sf: 1694.034}}}{space 1}{space 1}{ralign 9:{res:{sf: 4.843666}}}{space 1}{space 1}{ralign 9:{res:{sf: 27.90568}}}{space 1}{space 1}{ralign 9:{res:{sf:   178570}}}{space 1}
+{space 0}{space 0}{ralign 12:mother_age}{space 1}{c |}{space 1}{ralign 9:{res:{sf:      297}}}{space 1}{space 1}{ralign 9:{res:{sf:      297}}}{space 1}{space 1}{ralign 9:{res:{sf:   33.367}}}{space 1}{space 1}{ralign 9:{res:{sf: 74.82093}}}{space 1}{space 1}{ralign 9:{res:{sf:  8.64991}}}{space 1}{space 1}{ralign 9:{res:{sf: .0416857}}}{space 1}{space 1}{ralign 9:{res:{sf: 2.025287}}}{space 1}{space 1}{ralign 9:{res:{sf:     9910}}}{space 1}
+{space 0}{space 0}{ralign 12:mother_yob}{space 1}{c |}{space 1}{ralign 9:{res:{sf:      297}}}{space 1}{space 1}{ralign 9:{res:{sf:      297}}}{space 1}{space 1}{ralign 9:{res:{sf: 1988.471}}}{space 1}{space 1}{ralign 9:{res:{sf: 76.75002}}}{space 1}{space 1}{ralign 9:{res:{sf: 8.760709}}}{space 1}{space 1}{ralign 9:{res:{sf:-.0515253}}}{space 1}{space 1}{ralign 9:{res:{sf: 2.034592}}}{space 1}{space 1}{ralign 9:{res:{sf:   590576}}}{space 1}
+{space 0}{space 0}{ralign 12:mother_n_c~n}{space 1}{c |}{space 1}{ralign 9:{res:{sf:      297}}}{space 1}{space 1}{ralign 9:{res:{sf:      297}}}{space 1}{space 1}{ralign 9:{res:{sf:  3.16835}}}{space 1}{space 1}{ralign 9:{res:{sf: 1.735076}}}{space 1}{space 1}{ralign 9:{res:{sf: 1.317223}}}{space 1}{space 1}{ralign 9:{res:{sf: .0965375}}}{space 1}{space 1}{ralign 9:{res:{sf: 2.385443}}}{space 1}{space 1}{ralign 9:{res:{sf:      941}}}{space 1}
+{space 0}{space 0}{ralign 12:child_age}{space 1}{c |}{space 1}{ralign 9:{res:{sf:      297}}}{space 1}{space 1}{ralign 9:{res:{sf:      297}}}{space 1}{space 1}{ralign 9:{res:{sf:  6.59596}}}{space 1}{space 1}{ralign 9:{res:{sf:  13.8362}}}{space 1}{space 1}{ralign 9:{res:{sf: 3.719704}}}{space 1}{space 1}{ralign 9:{res:{sf: .0124832}}}{space 1}{space 1}{ralign 9:{res:{sf: 1.853038}}}{space 1}{space 1}{ralign 9:{res:{sf:     1959}}}{space 1}
+{space 0}{space 0}{ralign 12:child_yob}{space 1}{c |}{space 1}{ralign 9:{res:{sf:      297}}}{space 1}{space 1}{ralign 9:{res:{sf:      297}}}{space 1}{space 1}{ralign 9:{res:{sf: 2015.404}}}{space 1}{space 1}{ralign 9:{res:{sf:  13.8362}}}{space 1}{space 1}{ralign 9:{res:{sf: 3.719704}}}{space 1}{space 1}{ralign 9:{res:{sf:-.0124832}}}{space 1}{space 1}{ralign 9:{res:{sf: 1.853038}}}{space 1}{space 1}{ralign 9:{res:{sf:   598575}}}{space 1}
+{space 0}{space 0}{ralign 12:child_sex}{space 1}{c |}{space 1}{ralign 9:{res:{sf:      297}}}{space 1}{space 1}{ralign 9:{res:{sf:      297}}}{space 1}{space 1}{ralign 9:{res:{sf: .5185185}}}{space 1}{space 1}{ralign 9:{res:{sf: .2505005}}}{space 1}{space 1}{ralign 9:{res:{sf: .5005003}}}{space 1}{space 1}{ralign 9:{res:{sf:-.0741249}}}{space 1}{space 1}{ralign 9:{res:{sf: 1.005495}}}{space 1}{space 1}{ralign 9:{res:{sf:      154}}}{space 1}
+{space 0}{space 0}{ralign 12:child_grade}{space 1}{c |}{space 1}{ralign 9:{res:{sf:      150}}}{space 1}{space 1}{ralign 9:{res:{sf:      150}}}{space 1}{space 1}{ralign 9:{res:{sf:     4.34}}}{space 1}{space 1}{ralign 9:{res:{sf:     5.34}}}{space 1}{space 1}{ralign 9:{res:{sf: 2.310844}}}{space 1}{space 1}{ralign 9:{res:{sf: .0303034}}}{space 1}{space 1}{ralign 9:{res:{sf: 1.820544}}}{space 1}{space 1}{ralign 9:{res:{sf:      651}}}{space 1}
+
+{space 0}{space 0}{ralign 12:}{space 1}{c |}{space 1}{ralign 9:e(min)}{space 1}{space 1}{ralign 9:e(max)}{space 1}{space 1}{ralign 9:e(p1)}{space 1}{space 1}{ralign 9:e(p5)}{space 1}{space 1}{ralign 9:e(p10)}{space 1}{space 1}{ralign 9:e(p25)}{space 1}{space 1}{ralign 9:e(p50)}{space 1}{space 1}{ralign 9:e(p75)}{space 1}
+{space 0}{hline 13}{c   +}{hline 11}{hline 11}{hline 11}{hline 11}{hline 11}{hline 11}{hline 11}{hline 11}
+{space 0}{space 0}{ralign 12:mother_educ}{space 1}{c |}{space 1}{ralign 9:{res:{sf:        1}}}{space 1}{space 1}{ralign 9:{res:{sf:       18}}}{space 1}{space 1}{ralign 9:{res:{sf:        1}}}{space 1}{space 1}{ralign 9:{res:{sf:        4}}}{space 1}{space 1}{ralign 9:{res:{sf:        5}}}{space 1}{space 1}{ralign 9:{res:{sf:        7}}}{space 1}{space 1}{ralign 9:{res:{sf:        9}}}{space 1}{space 1}{ralign 9:{res:{sf:       11}}}{space 1}
+{space 0}{space 0}{ralign 12:mother_inc~e}{space 1}{c |}{space 1}{ralign 9:{res:{sf:        0}}}{space 1}{space 1}{ralign 9:{res:{sf:    11600}}}{space 1}{space 1}{ralign 9:{res:{sf:        0}}}{space 1}{space 1}{ralign 9:{res:{sf:        0}}}{space 1}{space 1}{ralign 9:{res:{sf:        0}}}{space 1}{space 1}{ralign 9:{res:{sf:      100}}}{space 1}{space 1}{ralign 9:{res:{sf:      220}}}{space 1}{space 1}{ralign 9:{res:{sf:      350}}}{space 1}
+{space 0}{space 0}{ralign 12:mother_age}{space 1}{c |}{space 1}{ralign 9:{res:{sf:       17}}}{space 1}{space 1}{ralign 9:{res:{sf:       50}}}{space 1}{space 1}{ralign 9:{res:{sf:       18}}}{space 1}{space 1}{ralign 9:{res:{sf:       20}}}{space 1}{space 1}{ralign 9:{res:{sf:       21}}}{space 1}{space 1}{ralign 9:{res:{sf:       26}}}{space 1}{space 1}{ralign 9:{res:{sf:       34}}}{space 1}{space 1}{ralign 9:{res:{sf:       40}}}{space 1}
+{space 0}{space 0}{ralign 12:mother_yob}{space 1}{c |}{space 1}{ralign 9:{res:{sf:     1972}}}{space 1}{space 1}{ralign 9:{res:{sf:     2005}}}{space 1}{space 1}{ralign 9:{res:{sf:     1972}}}{space 1}{space 1}{ralign 9:{res:{sf:     1974}}}{space 1}{space 1}{ralign 9:{res:{sf:     1976}}}{space 1}{space 1}{ralign 9:{res:{sf:     1982}}}{space 1}{space 1}{ralign 9:{res:{sf:     1988}}}{space 1}{space 1}{ralign 9:{res:{sf:     1996}}}{space 1}
+{space 0}{space 0}{ralign 12:mother_n_c~n}{space 1}{c |}{space 1}{ralign 9:{res:{sf:        1}}}{space 1}{space 1}{ralign 9:{res:{sf:        6}}}{space 1}{space 1}{ralign 9:{res:{sf:        1}}}{space 1}{space 1}{ralign 9:{res:{sf:        1}}}{space 1}{space 1}{ralign 9:{res:{sf:        1}}}{space 1}{space 1}{ralign 9:{res:{sf:        2}}}{space 1}{space 1}{ralign 9:{res:{sf:        3}}}{space 1}{space 1}{ralign 9:{res:{sf:        4}}}{space 1}
+{space 0}{space 0}{ralign 12:child_age}{space 1}{c |}{space 1}{ralign 9:{res:{sf:        0}}}{space 1}{space 1}{ralign 9:{res:{sf:       13}}}{space 1}{space 1}{ralign 9:{res:{sf:        0}}}{space 1}{space 1}{ralign 9:{res:{sf:        1}}}{space 1}{space 1}{ralign 9:{res:{sf:        1}}}{space 1}{space 1}{ralign 9:{res:{sf:        4}}}{space 1}{space 1}{ralign 9:{res:{sf:        6}}}{space 1}{space 1}{ralign 9:{res:{sf:       10}}}{space 1}
+{space 0}{space 0}{ralign 12:child_yob}{space 1}{c |}{space 1}{ralign 9:{res:{sf:     2009}}}{space 1}{space 1}{ralign 9:{res:{sf:     2022}}}{space 1}{space 1}{ralign 9:{res:{sf:     2009}}}{space 1}{space 1}{ralign 9:{res:{sf:     2010}}}{space 1}{space 1}{ralign 9:{res:{sf:     2010}}}{space 1}{space 1}{ralign 9:{res:{sf:     2012}}}{space 1}{space 1}{ralign 9:{res:{sf:     2016}}}{space 1}{space 1}{ralign 9:{res:{sf:     2018}}}{space 1}
+{space 0}{space 0}{ralign 12:child_sex}{space 1}{c |}{space 1}{ralign 9:{res:{sf:        0}}}{space 1}{space 1}{ralign 9:{res:{sf:        1}}}{space 1}{space 1}{ralign 9:{res:{sf:        0}}}{space 1}{space 1}{ralign 9:{res:{sf:        0}}}{space 1}{space 1}{ralign 9:{res:{sf:        0}}}{space 1}{space 1}{ralign 9:{res:{sf:        0}}}{space 1}{space 1}{ralign 9:{res:{sf:        1}}}{space 1}{space 1}{ralign 9:{res:{sf:        1}}}{space 1}
+{space 0}{space 0}{ralign 12:child_grade}{space 1}{c |}{space 1}{ralign 9:{res:{sf:        1}}}{space 1}{space 1}{ralign 9:{res:{sf:       10}}}{space 1}{space 1}{ralign 9:{res:{sf:        1}}}{space 1}{space 1}{ralign 9:{res:{sf:        1}}}{space 1}{space 1}{ralign 9:{res:{sf:        1}}}{space 1}{space 1}{ralign 9:{res:{sf:        2}}}{space 1}{space 1}{ralign 9:{res:{sf:      4.5}}}{space 1}{space 1}{ralign 9:{res:{sf:        7}}}{space 1}
+
+{space 0}{space 0}{ralign 12:}{space 1}{c |}{space 1}{ralign 9:e(p90)}{space 1}{space 1}{ralign 9:e(p95)}{space 1}{space 1}{ralign 9:e(p99)}{space 1}
+{space 0}{hline 13}{c   +}{hline 11}{hline 11}{hline 11}
+{space 0}{space 0}{ralign 12:mother_educ}{space 1}{c |}{space 1}{ralign 9:{res:{sf:       14}}}{space 1}{space 1}{ralign 9:{res:{sf:       16}}}{space 1}{space 1}{ralign 9:{res:{sf:       18}}}{space 1}
+{space 0}{space 0}{ralign 12:mother_inc~e}{space 1}{c |}{space 1}{ralign 9:{res:{sf:      520}}}{space 1}{space 1}{ralign 9:{res:{sf:     3600}}}{space 1}{space 1}{ralign 9:{res:{sf:    11600}}}{space 1}
+{space 0}{space 0}{ralign 12:mother_age}{space 1}{c |}{space 1}{ralign 9:{res:{sf:       45}}}{space 1}{space 1}{ralign 9:{res:{sf:       47}}}{space 1}{space 1}{ralign 9:{res:{sf:       50}}}{space 1}
+{space 0}{space 0}{ralign 12:mother_yob}{space 1}{c |}{space 1}{ralign 9:{res:{sf:     2001}}}{space 1}{space 1}{ralign 9:{res:{sf:     2002}}}{space 1}{space 1}{ralign 9:{res:{sf:     2004}}}{space 1}
+{space 0}{space 0}{ralign 12:mother_n_c~n}{space 1}{c |}{space 1}{ralign 9:{res:{sf:        5}}}{space 1}{space 1}{ralign 9:{res:{sf:        5}}}{space 1}{space 1}{ralign 9:{res:{sf:        6}}}{space 1}
+{space 0}{space 0}{ralign 12:child_age}{space 1}{c |}{space 1}{ralign 9:{res:{sf:       12}}}{space 1}{space 1}{ralign 9:{res:{sf:       12}}}{space 1}{space 1}{ralign 9:{res:{sf:       13}}}{space 1}
+{space 0}{space 0}{ralign 12:child_yob}{space 1}{c |}{space 1}{ralign 9:{res:{sf:     2021}}}{space 1}{space 1}{ralign 9:{res:{sf:     2021}}}{space 1}{space 1}{ralign 9:{res:{sf:     2022}}}{space 1}
+{space 0}{space 0}{ralign 12:child_sex}{space 1}{c |}{space 1}{ralign 9:{res:{sf:        1}}}{space 1}{space 1}{ralign 9:{res:{sf:        1}}}{space 1}{space 1}{ralign 9:{res:{sf:        1}}}{space 1}
+{space 0}{space 0}{ralign 12:child_grade}{space 1}{c |}{space 1}{ralign 9:{res:{sf:        7}}}{space 1}{space 1}{ralign 9:{res:{sf:        8}}}{space 1}{space 1}{ralign 9:{res:{sf:        8}}}{space 1}
+
+{com}. esttab all using "${c -(}output{c )-}/raw/describe_stats.tex", replace ///
+>     label style(tex) ///
+>     cells("count(pattern(0) fmt(0) label(Obs)) mean(pattern(1) fmt(2) label(Mean)) p50(pattern(1) fmt(2) label(Median)) sd(pattern(1) fmt(2) label(SD)) max(pattern(1) fmt(1) label(Max)) min(pattern(1) fmt(1) label(Min))") ///
+>     mlabels("All") ///
+>     title(Descriptive Statistics) ///
+>     collabels(none)
+{res}{txt}(output written to {browse  `"C:/Users/Victoria/OneDrive/文档/GitHub/DIL_task_2024/output/raw/describe_stats.tex"'})
+
+{com}. 
+. */--------------------------------------------------------------------------------*/
+.     *02. Balance check for child in school outcome variable
+.     // This is different from a usual balance test for treatment arms.
+. */------------------------------------------------------------------------------*/
+. eststo clear
+{txt}
+{com}. local vlist mother_educ mother_income mother_age mother_n_children child_age child_sex
+{txt}
+{com}. iebaltab `vlist', grpvar(child_in_school) ///
+>           stats(desc(var) pair(p)) replace ///
+>           savecsv("${c -(}output{c )-}/raw/sum_stats.csv") savexlsx("${c -(}output{c )-}/raw/sum_stats.xlsx") ///
+>           savetex("${c -(}output{c )-}/raw/sum_stats.tex") texnotefile("${c -(}output{c )-}/raw/sum_stats_note.tex")
+
+{res}{phang}Balance table saved in csv format to: {browse "C:/Users/Victoria/OneDrive/文档/GitHub/DIL_task_2024/output/raw/sum_stats.csv":C:/Users/Victoria/OneDrive/文档/GitHub/DIL_task_2024/output/raw/sum_stats.csv}{p_end}
+{phang}Balance table saved in Excel format to: {browse "C:/Users/Victoria/OneDrive/文档/GitHub/DIL_task_2024/output/raw/sum_stats.xlsx":C:/Users/Victoria/OneDrive/文档/GitHub/DIL_task_2024/output/raw/sum_stats.xlsx}{p_end}
+{phang}Balance table saved in LaTeX format to: {browse "C:/Users/Victoria/OneDrive/文档/GitHub/DIL_task_2024/output/raw/sum_stats.tex":C:/Users/Victoria/OneDrive/文档/GitHub/DIL_task_2024/output/raw/sum_stats.tex} and note file saved in LaTeX format to: {browse "C:/Users/Victoria/OneDrive/文档/GitHub/DIL_task_2024/output/raw/sum_stats_note.tex":C:/Users/Victoria/OneDrive/文档/GitHub/DIL_task_2024/output/raw/sum_stats_note.tex}{p_end}
+{txt}
+{com}. 
+. //The p-value for child_age is small, suggesting it may be a confounding factor.
+. 
+. 
+. */--------------------------------------------------------------------------------*/
+.     *03. Regression
+. */------------------------------------------------------------------------------*/
+. 
+. 
+. xtile mother_income_quartile = mother_income, nq(4)
+{txt}
+{com}. label define mother_income_quartile 1 "Lowest Quartile" 2 "Lower Middle Quartile" 3 "Upper Middle Quartile" 4 "Highest Quartile"
+{txt}
+{com}. label values mother_income_quartile mother_income_quartile
+{txt}
+{com}. 
+. xtile mother_educ_quartile = mother_educ, nq(4)
+{txt}
+{com}. label define mother_educ_quartile 1 "Lowest Quartile" 2 "Lower Middle Quartile" 3 "Upper Middle Quartile" 4 "Highest Quartile"
+{txt}
+{com}. label values mother_educ_quartile mother_educ_quartile
+{txt}
+{com}. 
+. xtile child_age_quartile = child_age, nq(4)
+{txt}
+{com}. label define child_age_quartile 1 "Lowest Quartile" 2 "Lower Middle Quartile" 3 "Upper Middle Quartile" 4 "Highest Quartile"
+{txt}
+{com}. label values child_age_quartile child_age_quartile
+{txt}
+{com}. 
+. 
+. eststo clear
+{txt}
+{com}. *********Baseline linear robust SE*********
+. reg child_in_school mother_educ child_age, r
+
+{txt}Linear regression                               Number of obs     = {res}       297
+                                                {txt}F(2, 294)         =  {res}   181.64
+                                                {txt}Prob > F          = {res}    0.0000
+                                                {txt}R-squared         = {res}    0.4556
+                                                {txt}Root MSE          =    {res} .36851
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1}child_in_s~l{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 1}mother_educ {c |}{col 14}{res}{space 2}-.0033134{col 26}{space 2} .0057035{col 37}{space 1}   -0.58{col 46}{space 3}0.562{col 54}{space 4}-.0145381{col 67}{space 3} .0079114
+{txt}{space 3}child_age {c |}{col 14}{res}{space 2} .0902625{col 26}{space 2} .0047367{col 37}{space 1}   19.06{col 46}{space 3}0.000{col 54}{space 4} .0809403{col 67}{space 3} .0995847
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2}-.0098694{col 26}{space 2} .0611948{col 37}{space 1}   -0.16{col 46}{space 3}0.872{col 54}{space 4}-.1303048{col 67}{space 3}  .110566
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}. est sto a
+{txt}
+{com}. *********Baseline logit robust SE*********
+. logit child_in_school mother_educ child_age, r
+
+{res}{txt}Iteration 0:{space 3}log pseudolikelihood = {res:-204.02759}  
+Iteration 1:{space 3}log pseudolikelihood = {res:-123.03103}  
+Iteration 2:{space 3}log pseudolikelihood = {res:-121.70179}  
+Iteration 3:{space 3}log pseudolikelihood = {res:-121.69926}  
+Iteration 4:{space 3}log pseudolikelihood = {res:-121.69926}  
+{res}
+{txt}Logistic regression{col 49}Number of obs{col 67}= {res}       297
+{txt}{col 49}Wald chi2({res}2{txt}){col 67}= {res}     59.78
+{txt}{col 49}Prob > chi2{col 67}= {res}    0.0000
+{txt}Log pseudolikelihood = {res}-121.69926{txt}{col 49}Pseudo R2{col 67}= {res}    0.4035
+
+{txt}{hline 16}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 17}{c |}{col 29}    Robust
+{col 1}child_in_school{col 17}{c |}      Coef.{col 29}   Std. Err.{col 41}      z{col 49}   P>|z|{col 57}     [95% Con{col 70}f. Interval]
+{hline 16}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 4}mother_educ {c |}{col 17}{res}{space 2}-.0185681{col 29}{space 2} .0400844{col 40}{space 1}   -0.46{col 49}{space 3}0.643{col 57}{space 4} -.097132{col 70}{space 3} .0599958
+{txt}{space 6}child_age {c |}{col 17}{res}{space 2} .5723534{col 29}{space 2} .0740375{col 40}{space 1}    7.73{col 49}{space 3}0.000{col 57}{space 4} .4272425{col 70}{space 3} .7174642
+{txt}{space 10}_cons {c |}{col 17}{res}{space 2}-3.161758{col 29}{space 2} .5317176{col 40}{space 1}   -5.95{col 49}{space 3}0.000{col 57}{space 4}-4.203905{col 70}{space 3}-2.119611
+{txt}{hline 16}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. est sto b
+{txt}
+{com}. *********Baseline probit robust SE*********
+. probit child_in_school mother_educ child_age, r
+
+{res}{txt}Iteration 0:{space 3}log pseudolikelihood = {res:-204.02759}  
+Iteration 1:{space 3}log pseudolikelihood = {res: -123.5387}  
+Iteration 2:{space 3}log pseudolikelihood = {res:-123.46922}  
+Iteration 3:{space 3}log pseudolikelihood = {res:-123.46921}  
+{res}
+{txt}Probit regression{col 49}Number of obs{col 67}= {res}       297
+{txt}{col 49}Wald chi2({res}2{txt}){col 67}= {res}     82.29
+{txt}{col 49}Prob > chi2{col 67}= {res}    0.0000
+{txt}Log pseudolikelihood = {res}-123.46921{txt}{col 49}Pseudo R2{col 67}= {res}    0.3948
+
+{txt}{hline 16}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 17}{c |}{col 29}    Robust
+{col 1}child_in_school{col 17}{c |}      Coef.{col 29}   Std. Err.{col 41}      z{col 49}   P>|z|{col 57}     [95% Con{col 70}f. Interval]
+{hline 16}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 4}mother_educ {c |}{col 17}{res}{space 2}-.0094767{col 29}{space 2} .0227324{col 40}{space 1}   -0.42{col 49}{space 3}0.677{col 57}{space 4}-.0540315{col 70}{space 3} .0350781
+{txt}{space 6}child_age {c |}{col 17}{res}{space 2}  .314764{col 29}{space 2} .0346994{col 40}{space 1}    9.07{col 49}{space 3}0.000{col 57}{space 4} .2467544{col 70}{space 3} .3827736
+{txt}{space 10}_cons {c |}{col 17}{res}{space 2}-1.780519{col 29}{space 2} .2864583{col 40}{space 1}   -6.22{col 49}{space 3}0.000{col 57}{space 4}-2.341967{col 70}{space 3}-1.219071
+{txt}{hline 16}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. est sto c
+{txt}
+{com}. *********linear with income as control*********
+. reg child_in_school mother_educ child_age i.mother_income_quartile , r
+
+{txt}Linear regression                               Number of obs     = {res}       297
+                                                {txt}F(5, 291)         =  {res}    74.18
+                                                {txt}Prob > F          = {res}    0.0000
+                                                {txt}R-squared         = {res}    0.4567
+                                                {txt}Root MSE          =    {res} .37003
+
+{txt}{hline 23}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 24}{c |}{col 36}    Robust
+{col 1}       child_in_school{col 24}{c |}      Coef.{col 36}   Std. Err.{col 48}      t{col 56}   P>|t|{col 64}     [95% Con{col 77}f. Interval]
+{hline 23}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 11}mother_educ {c |}{col 24}{res}{space 2}-.0034542{col 36}{space 2} .0057826{col 47}{space 1}   -0.60{col 56}{space 3}0.551{col 64}{space 4}-.0148353{col 77}{space 3} .0079269
+{txt}{space 13}child_age {c |}{col 24}{res}{space 2} .0903827{col 36}{space 2} .0047474{col 47}{space 1}   19.04{col 56}{space 3}0.000{col 64}{space 4} .0810391{col 77}{space 3} .0997263
+{txt}{space 22} {c |}
+mother_income_quartile {c |}
+Lower Middle Quartile  {c |}{col 24}{res}{space 2}-.0283805{col 36}{space 2} .0608189{col 47}{space 1}   -0.47{col 56}{space 3}0.641{col 64}{space 4}-.1480812{col 77}{space 3} .0913202
+{txt}Upper Middle Quartile  {c |}{col 24}{res}{space 2} .0151358{col 36}{space 2} .0595229{col 47}{space 1}    0.25{col 56}{space 3}0.799{col 64}{space 4}-.1020141{col 77}{space 3} .1322858
+{txt}{space 5}Highest Quartile  {c |}{col 24}{res}{space 2} .0074749{col 36}{space 2} .0597167{col 47}{space 1}    0.13{col 56}{space 3}0.900{col 64}{space 4}-.1100564{col 77}{space 3} .1250063
+{txt}{space 22} {c |}
+{space 17}_cons {c |}{col 24}{res}{space 2}-.0080557{col 36}{space 2} .0716824{col 47}{space 1}   -0.11{col 56}{space 3}0.911{col 64}{space 4}-.1491374{col 77}{space 3}  .133026
+{txt}{hline 23}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}. est sto d
+{txt}
+{com}. *********linear with mother age as control*********
+. reg child_in_school mother_educ child_age mother_age, r
+
+{txt}Linear regression                               Number of obs     = {res}       297
+                                                {txt}F(3, 293)         =  {res}   120.73
+                                                {txt}Prob > F          = {res}    0.0000
+                                                {txt}R-squared         = {res}    0.4568
+                                                {txt}Root MSE          =    {res} .36872
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1}child_in_s~l{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 1}mother_educ {c |}{col 14}{res}{space 2}-.0028338{col 26}{space 2} .0056663{col 37}{space 1}   -0.50{col 46}{space 3}0.617{col 54}{space 4}-.0139856{col 67}{space 3} .0083179
+{txt}{space 3}child_age {c |}{col 14}{res}{space 2} .0903363{col 26}{space 2} .0047562{col 37}{space 1}   18.99{col 46}{space 3}0.000{col 54}{space 4} .0809757{col 67}{space 3} .0996969
+{txt}{space 2}mother_age {c |}{col 14}{res}{space 2} .0020481{col 26}{space 2} .0023688{col 37}{space 1}    0.86{col 46}{space 3}0.388{col 54}{space 4}-.0026139{col 67}{space 3}   .00671
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2}-.0830285{col 26}{space 2} .0987581{col 37}{space 1}   -0.84{col 46}{space 3}0.401{col 54}{space 4}-.2773936{col 67}{space 3} .1113367
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}. est sto e
+{txt}
+{com}. *********linear with mother age as control*********
+. reg child_in_school mother_educ child_age mother_n_children, r
+
+{txt}Linear regression                               Number of obs     = {res}       297
+                                                {txt}F(3, 293)         =  {res}   122.37
+                                                {txt}Prob > F          = {res}    0.0000
+                                                {txt}R-squared         = {res}    0.4566
+                                                {txt}Root MSE          =    {res} .36877
+
+{txt}{hline 18}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 19}{c |}{col 31}    Robust
+{col 1}  child_in_school{col 19}{c |}      Coef.{col 31}   Std. Err.{col 43}      t{col 51}   P>|t|{col 59}     [95% Con{col 72}f. Interval]
+{hline 18}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 6}mother_educ {c |}{col 19}{res}{space 2}-.0040007{col 31}{space 2} .0058152{col 42}{space 1}   -0.69{col 51}{space 3}0.492{col 59}{space 4}-.0154455{col 72}{space 3} .0074442
+{txt}{space 8}child_age {c |}{col 19}{res}{space 2} .0901758{col 31}{space 2}  .004743{col 42}{space 1}   19.01{col 51}{space 3}0.000{col 59}{space 4} .0808411{col 72}{space 3} .0995105
+{txt}mother_n_children {c |}{col 19}{res}{space 2} .0126247{col 31}{space 2} .0155753{col 42}{space 1}    0.81{col 51}{space 3}0.418{col 59}{space 4}-.0180289{col 72}{space 3} .0432783
+{txt}{space 12}_cons {c |}{col 19}{res}{space 2}-.0430857{col 31}{space 2} .0707735{col 42}{space 1}   -0.61{col 51}{space 3}0.543{col 59}{space 4}-.1823746{col 72}{space 3} .0962032
+{txt}{hline 18}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}. est sto f
+{txt}
+{com}. *********linear with child sex as control*********
+. reg child_in_school mother_educ child_age child_sex, r
+
+{txt}Linear regression                               Number of obs     = {res}       297
+                                                {txt}F(3, 293)         =  {res}   120.35
+                                                {txt}Prob > F          = {res}    0.0000
+                                                {txt}R-squared         = {res}    0.4568
+                                                {txt}Root MSE          =    {res} .36874
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1}child_in_s~l{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 1}mother_educ {c |}{col 14}{res}{space 2}-.0028665{col 26}{space 2} .0057194{col 37}{space 1}   -0.50{col 46}{space 3}0.617{col 54}{space 4}-.0141229{col 67}{space 3} .0083899
+{txt}{space 3}child_age {c |}{col 14}{res}{space 2} .0901929{col 26}{space 2} .0047474{col 37}{space 1}   19.00{col 46}{space 3}0.000{col 54}{space 4} .0808496{col 67}{space 3} .0995361
+{txt}{space 3}child_sex {c |}{col 14}{res}{space 2}  .034608{col 26}{space 2} .0428484{col 37}{space 1}    0.81{col 46}{space 3}0.420{col 54}{space 4}-.0497217{col 67}{space 3} .1189376
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2}-.0313934{col 26}{space 2} .0667323{col 37}{space 1}   -0.47{col 46}{space 3}0.638{col 54}{space 4}-.1627289{col 67}{space 3} .0999421
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}. est sto g
+{txt}
+{com}. *********linear cluster by village*********
+. reg child_in_school mother_educ child_age , cluster(village_id)
+
+{txt}Linear regression                               Number of obs     = {res}       297
+                                                {txt}F(2, 9)           =  {res}   383.38
+                                                {txt}Prob > F          = {res}    0.0000
+                                                {txt}R-squared         = {res}    0.4556
+                                                {txt}Root MSE          =    {res} .36851
+
+{txt}{ralign 78:(Std. Err. adjusted for {res:10} clusters in village_id)}
+{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1}child_in_s~l{col 14}{c |}      Coef.{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 1}mother_educ {c |}{col 14}{res}{space 2}-.0033134{col 26}{space 2}  .003634{col 37}{space 1}   -0.91{col 46}{space 3}0.386{col 54}{space 4} -.011534{col 67}{space 3} .0049072
+{txt}{space 3}child_age {c |}{col 14}{res}{space 2} .0902625{col 26}{space 2} .0036088{col 37}{space 1}   25.01{col 46}{space 3}0.000{col 54}{space 4} .0820988{col 67}{space 3} .0984263
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2}-.0098694{col 26}{space 2} .0546885{col 37}{space 1}   -0.18{col 46}{space 3}0.861{col 54}{space 4}-.1335834{col 67}{space 3} .1138447
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}. est sto h
+{txt}
+{com}. 
+. 
+. 
+. estout a b c d using "${c -(}output{c )-}/raw/Table1.txt", label style(tex) replace cells(b(star fmt(3)) se(fmt(3) par(( )))) ///
+> collabels(, none) mlabels(, none) msign(-) nolz varwidth(20) modelwidth(13) ///
+> prehead("\begin{c -(}table{c )-}[hbt!]" "\caption{c -(}Regression Result{c )-}""\begin{c -(}tabular*{c )-}{c -(}\textwidth{c )-}{c -(}@{c -(}\extracolsep{c -(}\fill{c )-}{c )-}lcccc{c )-}" "\hline \hline" "&(1) &(2)&(3)&(4)\\") ///
+> posthead(\hline) prefoot(\hline) postfoot() starlevels($^{c -(}*{c )-}$ 0.10 $^{c -(}**{c )-}$ 0.05 $^{c -(}***{c )-}$ 0.01) ///
+> stats(r2 N, fmt(%9.3f %9.0f) labels("R$^2$" "Observations")) nonumbers
+{res}{txt}(output written to {browse  `"C:/Users/Victoria/OneDrive/文档/GitHub/DIL_task_2024/output/raw/Table1.txt"'})
+
+{com}. 
+. estout e f g h using "${c -(}output{c )-}/raw/Table1.txt", label style(tex) append cells(b(star fmt(3)) se(fmt(3) par(( )))) ///
+> collabels(, none) mlabels(, none) msign(-) nolz varwidth(20) modelwidth(13) ///
+> prehead("\hline \hline" "&(5) &(6)&(7)&(8)\\")  posthead(\hline) prefoot(\hline) ///
+> postfoot("\hline \hline""\end{c -(}tabular*{c )-}""\footnotesize" "$^{c -(}*{c )-}$ p$<$0.10, $^{c -(}**{c )-}$ p$<$0.05, $^{c -(}***{c )-}$ p$<$0.01\\""" "\end{c -(}table{c )-}") ///
+> starlevels($^{c -(}*{c )-}$ 0.10 $^{c -(}**{c )-}$ 0.05 $^{c -(}***{c )-}$ 0.01) stats(r2 N, fmt(%9.3f %9.0f) labels("R$^2$" "Observations")) nonumbers
+{res}{txt}(output written to {browse  `"C:/Users/Victoria/OneDrive/文档/GitHub/DIL_task_2024/output/raw/Table1.txt"'})
+
+{com}. eststo clear
+{txt}
+{com}. 
+. 
+. 
+. *********If time allows, I can also report on quatile*********
+. //reg child_in_school i.mother_educ_quartile c.child_age, r
+. 
+. */--------------------------------------------------------------------------------*/
+.     *04. Matching
+. */------------------------------------------------------------------------------*/
+. 
+. *********If time allows, I can also report on matching*********
+. 
+. *tabulate child_age, generate(child_age)
+. tabulate mother_educ_quartile, generate(mother_educ_quartile)
+
+       {txt}4 quantiles of {c |}
+          mother_educ {c |}      Freq.     Percent        Cum.
+{hline 22}{c +}{hline 35}
+      Lowest Quartile {c |}{res}         98       33.00       33.00
+{txt}Lower Middle Quartile {c |}{res}         77       25.93       58.92
+{txt}Upper Middle Quartile {c |}{res}         54       18.18       77.10
+{txt}     Highest Quartile {c |}{res}         68       22.90      100.00
+{txt}{hline 22}{c +}{hline 35}
+                Total {c |}{res}        297      100.00
+{txt}
+{com}. tabulate child_age_quartile, generate(child_age_quartile)
+
+       {txt}4 quantiles of {c |}
+            child_age {c |}      Freq.     Percent        Cum.
+{hline 22}{c +}{hline 35}
+      Lowest Quartile {c |}{res}        100       33.67       33.67
+{txt}Lower Middle Quartile {c |}{res}         50       16.84       50.51
+{txt}Upper Middle Quartile {c |}{res}         92       30.98       81.48
+{txt}     Highest Quartile {c |}{res}         55       18.52      100.00
+{txt}{hline 22}{c +}{hline 35}
+                Total {c |}{res}        297      100.00
+{txt}
+{com}. 
+. 
+. foreach var in mother_educ_quartile1 mother_educ_quartile2 mother_educ_quartile3 mother_educ_quartile4 {c -(}
+{txt}  2{com}.     teffects psmatch (child_in_school) (`var' child_age)
+{txt}  3{com}. {c )-}
+{res}
+{txt}Treatment-effects estimation{col 48}Number of obs {col 67}= {res}       297
+{txt:Estimator}{col 16}:{res: propensity-score matching}{col 48}{txt:Matches: requested }{col 67}{txt:=}          1
+{txt:Outcome model}{col 16}:{res: matching}{txt}{col 63}min {col 67}= {res}         2
+{txt:Treatment model}{col 16}:{res: logit}{col 63}{txt:max }{col 67}{txt:=}         25
+{txt}{hline 22}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 23}{c |}{col 35}   AI Robust
+{col 1}      child_in_school{col 23}{c |}      Coef.{col 35}   Std. Err.{col 47}      z{col 55}   P>|z|{col 63}     [95% Con{col 76}f. Interval]
+{hline 22}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}ATE                   {txt}{c |}
+mother_educ_quartile1 {c |}
+{space 12}(1 vs 0)  {c |}{col 23}{res}{space 2} .0008875{col 35}{space 2} .0377495{col 46}{space 1}    0.02{col 55}{space 3}0.981{col 63}{space 4}-.0731001{col 76}{space 3} .0748751
+{txt}{hline 22}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}
+{txt}Treatment-effects estimation{col 48}Number of obs {col 67}= {res}       297
+{txt:Estimator}{col 16}:{res: propensity-score matching}{col 48}{txt:Matches: requested }{col 67}{txt:=}          1
+{txt:Outcome model}{col 16}:{res: matching}{txt}{col 63}min {col 67}= {res}         1
+{txt:Treatment model}{col 16}:{res: logit}{col 63}{txt:max }{col 67}{txt:=}         23
+{txt}{hline 22}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 23}{c |}{col 35}   AI Robust
+{col 1}      child_in_school{col 23}{c |}      Coef.{col 35}   Std. Err.{col 47}      z{col 55}   P>|z|{col 63}     [95% Con{col 76}f. Interval]
+{hline 22}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}ATE                   {txt}{c |}
+mother_educ_quartile2 {c |}
+{space 12}(1 vs 0)  {c |}{col 23}{res}{space 2} .0346173{col 35}{space 2} .0409885{col 46}{space 1}    0.84{col 55}{space 3}0.398{col 63}{space 4}-.0457188{col 76}{space 3} .1149533
+{txt}{hline 22}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}
+{txt}Treatment-effects estimation{col 48}Number of obs {col 67}= {res}       297
+{txt:Estimator}{col 16}:{res: propensity-score matching}{col 48}{txt:Matches: requested }{col 67}{txt:=}          1
+{txt:Outcome model}{col 16}:{res: matching}{txt}{col 63}min {col 67}= {res}         1
+{txt:Treatment model}{col 16}:{res: logit}{col 63}{txt:max }{col 67}{txt:=}         26
+{txt}{hline 22}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 23}{c |}{col 35}   AI Robust
+{col 1}      child_in_school{col 23}{c |}      Coef.{col 35}   Std. Err.{col 47}      z{col 55}   P>|z|{col 63}     [95% Con{col 76}f. Interval]
+{hline 22}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}ATE                   {txt}{c |}
+mother_educ_quartile3 {c |}
+{space 12}(1 vs 0)  {c |}{col 23}{res}{space 2}-.0263841{col 35}{space 2} .0485348{col 46}{space 1}   -0.54{col 55}{space 3}0.587{col 63}{space 4}-.1215106{col 76}{space 3} .0687424
+{txt}{hline 22}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}
+{txt}Treatment-effects estimation{col 48}Number of obs {col 67}= {res}       297
+{txt:Estimator}{col 16}:{res: propensity-score matching}{col 48}{txt:Matches: requested }{col 67}{txt:=}          1
+{txt:Outcome model}{col 16}:{res: matching}{txt}{col 63}min {col 67}= {res}         2
+{txt:Treatment model}{col 16}:{res: logit}{col 63}{txt:max }{col 67}{txt:=}         25
+{txt}{hline 22}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 23}{c |}{col 35}   AI Robust
+{col 1}      child_in_school{col 23}{c |}      Coef.{col 35}   Std. Err.{col 47}      z{col 55}   P>|z|{col 63}     [95% Con{col 76}f. Interval]
+{hline 22}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}ATE                   {txt}{c |}
+mother_educ_quartile4 {c |}
+{space 12}(1 vs 0)  {c |}{col 23}{res}{space 2}-.0354836{col 35}{space 2} .0411321{col 46}{space 1}   -0.86{col 55}{space 3}0.388{col 63}{space 4}-.1161011{col 76}{space 3} .0451338
+{txt}{hline 22}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+. 
+. foreach var in child_age_quartile1 child_age_quartile2 child_age_quartile3 child_age_quartile4 {c -(}
+{txt}  2{com}.     teffects psmatch (child_in_school) (`var' mother_educ_quartile)
+{txt}  3{com}. {c )-}
+{res}
+{txt}Treatment-effects estimation{col 48}Number of obs {col 67}= {res}       297
+{txt:Estimator}{col 16}:{res: propensity-score matching}{col 48}{txt:Matches: requested }{col 67}{txt:=}          1
+{txt:Outcome model}{col 16}:{res: matching}{txt}{col 63}min {col 67}= {res}        19
+{txt:Treatment model}{col 16}:{res: logit}{col 63}{txt:max }{col 67}{txt:=}         63
+{txt}{hline 20}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 21}{c |}{col 33}   AI Robust
+{col 1}    child_in_school{col 21}{c |}      Coef.{col 33}   Std. Err.{col 45}      z{col 53}   P>|z|{col 61}     [95% Con{col 74}f. Interval]
+{hline 20}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}ATE                 {txt}{c |}
+child_age_quartile1 {c |}
+{space 10}(1 vs 0)  {c |}{col 21}{res}{space 2}-.6696415{col 33}{space 2} .0434776{col 44}{space 1}  -15.40{col 53}{space 3}0.000{col 61}{space 4}-.7548559{col 74}{space 3}-.5844271
+{txt}{hline 20}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}
+{txt}Treatment-effects estimation{col 48}Number of obs {col 67}= {res}       297
+{txt:Estimator}{col 16}:{res: propensity-score matching}{col 48}{txt:Matches: requested }{col 67}{txt:=}          1
+{txt:Outcome model}{col 16}:{res: matching}{txt}{col 63}min {col 67}= {res}        10
+{txt:Treatment model}{col 16}:{res: logit}{col 63}{txt:max }{col 67}{txt:=}         83
+{txt}{hline 20}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 21}{c |}{col 33}   AI Robust
+{col 1}    child_in_school{col 21}{c |}      Coef.{col 33}   Std. Err.{col 45}      z{col 53}   P>|z|{col 61}     [95% Con{col 74}f. Interval]
+{hline 20}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}ATE                 {txt}{c |}
+child_age_quartile2 {c |}
+{space 10}(1 vs 0)  {c |}{col 21}{res}{space 2}-.0795093{col 33}{space 2} .0790635{col 44}{space 1}   -1.01{col 53}{space 3}0.315{col 61}{space 4}-.2344708{col 74}{space 3} .0754522
+{txt}{hline 20}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}
+{txt}Treatment-effects estimation{col 48}Number of obs {col 67}= {res}       297
+{txt:Estimator}{col 16}:{res: propensity-score matching}{col 48}{txt:Matches: requested }{col 67}{txt:=}          1
+{txt:Outcome model}{col 16}:{res: matching}{txt}{col 63}min {col 67}= {res}        15
+{txt:Treatment model}{col 16}:{res: logit}{col 63}{txt:max }{col 67}{txt:=}         62
+{txt}{hline 20}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 21}{c |}{col 33}   AI Robust
+{col 1}    child_in_school{col 21}{c |}      Coef.{col 33}   Std. Err.{col 45}      z{col 53}   P>|z|{col 61}     [95% Con{col 74}f. Interval]
+{hline 20}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}ATE                 {txt}{c |}
+child_age_quartile3 {c |}
+{space 10}(1 vs 0)  {c |}{col 21}{res}{space 2} .4734845{col 33}{space 2} .0475132{col 44}{space 1}    9.97{col 53}{space 3}0.000{col 61}{space 4} .3803604{col 74}{space 3} .5666086
+{txt}{hline 20}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}
+{txt}Treatment-effects estimation{col 48}Number of obs {col 67}= {res}       297
+{txt:Estimator}{col 16}:{res: propensity-score matching}{col 48}{txt:Matches: requested }{col 67}{txt:=}          1
+{txt:Outcome model}{col 16}:{res: matching}{txt}{col 63}min {col 67}= {res}        10
+{txt:Treatment model}{col 16}:{res: logit}{col 63}{txt:max }{col 67}{txt:=}         86
+{txt}{hline 20}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 21}{c |}{col 33}   AI Robust
+{col 1}    child_in_school{col 21}{c |}      Coef.{col 33}   Std. Err.{col 45}      z{col 53}   P>|z|{col 61}     [95% Con{col 74}f. Interval]
+{hline 20}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}ATE                 {txt}{c |}
+child_age_quartile4 {c |}
+{space 10}(1 vs 0)  {c |}{col 21}{res}{space 2} .4318203{col 33}{space 2} .0467505{col 44}{space 1}    9.24{col 53}{space 3}0.000{col 61}{space 4}  .340191{col 74}{space 3} .5234497
+{txt}{hline 20}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+
+{com}. 
+. 
+. 
+. */--------------------------------------------------------------------------------*/
+.     *05. Make a box plot of the percentage of children enrolled in school by gender
+. */------------------------------------------------------------------------------*/
+. 
+. bys child_sex: egen child_in_school_sex = mean(child_in_school)
+{txt}
+{com}. 
+. * Create a bar graph of the mean enrollment by gender
+. graph bar (mean) child_in_school, over(child_sex, gap(50) label(labsize(small) alternate)) ///
+> blabel(bar, position(outside) format(%9.2f)) ///
+> ylabel(0(0.1)0.6, format(%9.0g) grid) ///
+> ytitle("Mean Percentage Enrolled") ///
+> title("Percentage of Children Enrolled in School by Gender") ///
+> bar(2, fcolor(blue*0.7) lcolor(none)) /// Adjust the bar color and transparency
+> plotregion(color(white)) scheme(s2color)
+{res}{txt}
+{com}. graph export "${c -(}output{c )-}/raw/school_gender_bar.png", as(png) replace
+{txt}(file C:/Users/Victoria/OneDrive/文档/GitHub/DIL_task_2024/output/raw/school_gender_bar.png written in PNG format)
+
+{com}. 
+. 
+. * Create a box plot with child_age on the y-axis and child_sex on the x-axis
+. bys child_age : egen child_in_school_by_age = mean(child_in_school)
+{txt}
+{com}. 
+. graph box child_in_school_by_age, over(child_in_school) over(child_sex) ///
+> title("Distribution of School Enrollment by Age and Gender") ///
+> ytitle("Mean Percentage Enrolled") ///
+> legend(label(1 "Not Enrolled") label(2 "Enrolled")) ///
+> scheme(s2color)
+{res}{txt}
+{com}. graph export "${c -(}output{c )-}/raw/school_gender_box.png", as(png) replace
+{txt}(file C:/Users/Victoria/OneDrive/文档/GitHub/DIL_task_2024/output/raw/school_gender_box.png written in PNG format)
+
+{com}. 
+{txt}end of do-file
+{com}.                 
+.         {c )-}
+{txt}
+{com}.         
+. 
+.         
+.         log using "${c -(}output{c )-}/raw/logfile.txt",replace
+{err}log file already open
+{txt}{search r(604), local:r(604);}
+
+end of do-file
+
+{search r(604), local:r(604);}
+
+{com}. 

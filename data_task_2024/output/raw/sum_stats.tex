@@ -1,0 +1,26 @@
+%%% Table created in Stata by command iebaltab
+%%% (https://github.com/worldbank/ietoolkit)
+%%% (https://dimewiki.worldbank.org/iebaltab)
+%%% The command was specified exactly like this: 
+%%% iebaltab mother_educ mother_income mother_age mother_n_children child_age child_sex, grpvar(child_in_school) stats(desc(var) pair(p)) replace savecsv("C:/Users/Victoria/OneDrive/文档/GitHub/DIL_task_2024/output/raw/sum_stats.csv") savexlsx("C:/Users/Victoria/OneDrive/文档/GitHub/DIL_task_2024/output/raw/sum_stats.xlsx") savetex("C:/Users/Victoria/OneDrive/文档/GitHub/DIL_task_2024/output/raw/sum_stats.tex") texnotefile("C:/Users/Victoria/OneDrive/文档/GitHub/DIL_task_2024/output/raw/sum_stats_note.tex")
+
+\begin{tabular}{@{\extracolsep{5pt}}lcccccc}
+\\[-1.8ex]\hline \hline \\[-1.8ex]
+ & \multicolumn{2}{c}{(1)}  & \multicolumn{2}{c}{(2)}  & \multicolumn{2}{c}{(1)-(2)} \\
+ & \multicolumn{2}{c}{0}  & \multicolumn{2}{c}{1}  & \multicolumn{2}{c}{Pairwise t-test}  \\
+Variable & N & Mean/(Var) & N & Mean/(Var) & N & P-value \\ \hline \\[-1.8ex] 
+mother\_educ   & 132    & 9.129    & 165    & 8.964    & 297    & 0.690   \\
+ &   & (13.151)  &   & (12.011)  &   &  \\ [1ex]
+mother\_income   & 132    & 544.470    & 165    & 646.667    & 297    & 0.606   \\
+ &   & (2.27e+06)  &   & (3.36e+06)  &   &  \\ [1ex]
+mother\_age   & 132    & 33.106    & 165    & 33.576    & 297    & 0.643   \\
+ &   & (73.439)  &   & (76.282)  &   &  \\ [1ex]
+mother\_n\_children   & 132    & 3.106    & 165    & 3.218    & 297    & 0.467   \\
+ &   & (1.638)  &   & (1.818)  &   &  \\ [1ex]
+child\_age   & 132    & 3.795    & 165    & 8.836    & 297    & 0.000***   \\
+ &   & (7.981)  &   & (7.235)  &   &  \\ [1ex]
+child\_sex   & 132    & 0.492    & 165    & 0.539    & 297    & 0.423   \\
+ &   & (0.252)  &   & (0.250)  &   &  \\ [1ex]
+\hline \hline \\[-1.8ex]
+
+\end{tabular}

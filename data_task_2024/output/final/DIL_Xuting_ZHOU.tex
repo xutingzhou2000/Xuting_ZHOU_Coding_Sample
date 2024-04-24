@@ -1,0 +1,170 @@
+\documentclass[10pt]{article}
+\usepackage{latexsym,amssymb,graphicx,tikz}
+\usetikzlibrary{decorations.pathreplacing,calligraphy}
+\addtolength{\hoffset}{-0.75in} 
+\addtolength{\voffset}{-0.75in}
+\addtolength{\textwidth}{1.5in} 
+\addtolength{\textheight}{1.6in}
+
+%\usepackage[dvipsnames]{xcolor}
+\usepackage[colorlinks = true,
+            linkcolor = black,
+            urlcolor  = black,
+            citecolor = black,
+            linkbordercolor = {white},
+            anchorcolor = black]{hyperref}
+\usepackage{float}
+\usepackage{fancyvrb}
+\usepackage{multirow}
+\usepackage{etoolbox}
+\usepackage{verbatim}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{bm}
+\usepackage{bbm}
+\usepackage{enumitem}
+\usepackage{soul}
+\usepackage{ulem}
+
+\lstset{
+    language=R,
+    basicstyle=\ttfamily
+}
+
+\usepackage{graphicx,wrapfig,lipsum}
+
+% === dcolumn package ===
+\usepackage{dcolumn}
+\newcolumntype{.}{D{.}{.}{-1}}
+\newcolumntype{d}[1]{D{.}{.}{#1}}
+\usepackage{multicol}
+
+% === more new math commands
+\renewcommand\r{}
+\renewcommand\l{}
+\newcommand\dist{\buildrel\rm d\over\sim}
+\newcommand\ind{\stackrel{\rm indep.}{\sim}}
+\newcommand\ud{\mathrm{d}}
+\newcommand\iid{\stackrel{\rm i.i.d.}{\sim}}
+\newcommand\logit{{\rm logit}}
+\newcommand\cA{\mathcal{A}}
+\newcommand\E{\mathbb{E}}
+\newcommand\V{\mathbb{V}}
+\newcommand\cJ{\mathcal{J}}
+\newcommand\cN{\mathcal{N}}
+\newcommand\bone{\mathbf{1}}
+\newcommand\var{{\rm Var}}
+\newcommand\cov{{\rm Cov}}
+\newcommand\tomega{\tilde\omega}
+
+% === spacing
+\usepackage{setspace}
+\onehalfspacing
+
+\newcommand\spacingset[1]{\renewcommand{\baselinestretch}%
+{#1}\small\normalsize}
+% \spacingset{1.2}
+
+% === solutions ===
+% setup a new boolean
+\newbool{solutionsoff}
+\setbool{solutionsoff}{false}
+% new environment
+\newenvironment{solutions}{\color{red}}{\ignorespacesafterend}
+% set conditional behaviour of environment
+\ifbool{solutionsoff}{\AtBeginEnvironment{solutions}{\comment}%
+\AtEndEnvironment{solutions}{\endcomment}}{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\begin{center}
+\begin{LARGE}DIL Data Task \end{LARGE}
+\\
+\bigskip
+\begin{LARGE}(Senior) Research Associate \end{LARGE} 
+\\
+\bigskip
+\begin{large}Xuting Zhou\end{large}\\
+\begin{large}4/17/2024\end{large}\\
+\end{center}%
+
+\vspace{-12pt}
+
+
+\section{Data Tidying}
+
+Here’s a summary of each step undertaken to clean the data:
+
+First,  gender information are  standardized across six variables by converting textual gender representations to numeric codes ("0" for male and "1" for female). Specific duplicates are reviewed and selectively dropped. Then, the dataset is reshaped from wide to long format, which organizes the data so each row represents a single child, while also labelling variables and values. 
+
+Missing values for mother income and mother yob are imputed using the median income by mother's education level and calculated from mother's age, respectively. Missing child birth years are imputed based on child age.
+
+Finally, the script checks for logical inconsistencies or errors, such as children reported to be in school at implausibly young ages or children with birth years after the survey year. Entries that don't meet logical criteria are flagged or removed (7 observations deleted).
+
+
+
+\section{ Data Analysis}
+
+\subsection{Summary Statistics}
+\begin{center}
+\input{describe_stats}
+\end{center}
+
+The table provides descriptive statistics for a dataset consisting of 297 observations. The average years of education for mothers is 9 years. Mother's income shows significant variability, with an average of \$601, a median lower at \$220, and a very high SD of \$1694. The average age of mothers is 33 years, with ages ranging from 17 to 50 years. The mothers have an average of 3 children, with a range from 1 to 6 children. The data on children's school grades is available for 150 children, showing an average grade level of 4, median of 5, and grades ranging from 1 to 10.
+
+
+\subsection{Balance Check}
+\begin{center}
+    \input{sum_stats}
+\end{center}
+The small p-value for child age in the balance test suggests significant differences in age distribution between the children who are enrolled and those who are not. This implies that age may influence or be associated with the likelihood of being enrolled in school, so it is a confounding factor.
+
+\newpage
+\subsection{Regression}
+\begin{center}
+    \input{Table1.txt}
+\end{center}
+
+\newpage
+
+\subsubsection{Model Specification}
+(1) Baseline Linear Regression with Robust Standard Errors: This model examines the basic relationship between a child's school enrollment and the mother's education and the child's age, using robust standard errors to account for heteroscedasticity.
+
+(2) Baseline Logit Regression with Robust Standard Errors: It uses logistic regression to model the probability of school enrollment as a function of mother's education and child's age.
+
+(3) Baseline Probit Regression with Robust Standard Errors: This probit regression estimates the probability of school enrollment using a normal cumulative distribution.
+
+(4) Linear Regression with Mother Income as Control: Adds mother's income quartiles as a control variable to the linear regression, examining how economic status influences the likelihood of a child's school enrollment alongside educational and age factors.
+
+(5) Linear Regression with Mother's Age as Control: This model controls for mother's age in addition to mother's education and child's age.
+
+(6) Linear Regression with Number of Children as Control: By including the number of children living with the mother, this model explores whether a larger family size affects the probability of a child being enrolled in school.
+
+(7) Linear Regression with Child's Sex as Control: Incorporates child's sex as a control to determine if there are any gender-specific differences in school enrollment rates, controlling for mother's education and child's age.
+
+(8) Linear Regression Clustered by Village: This model accounts for clustering within villages by acknowledging potential intra-village correlation.
+
+\subsubsection{Result Discussion}
+
+Across all models, the coefficient for mother's education is very small and not statistically significant,  suggesting that mother's education has a minimal direct impact on whether children are enrolled in school in these models.
+
+The coefficient for child age is consistently positive and highly significant, suggesting a strong positive relationship between child age and school enrollment. This could indicate that as children get older, they are more likely to be enrolled in school.For the linear model, it can be interpreted that with a one-year increase in child age, there is a 9\% increase in the probability of enrolling in school. For the probit and logit models, the positive sign indicates the same direction.
+
+The coefficients for different income quartiles are small and mostly not statistically significant, indicating that income level may not be a strong predictor of school enrollment in this data.
+
+ The R-squared values are relatively consistent across the models, around 0.456 to 0.457, indicating that approximately 45.6\% to 45.7\% of the variability in school enrollment is explained by the models. 
+
+
+ \subsubsection{Graphs}
+ \begin{center}
+      \includegraphics[scale=0.5]{school_gender_bar.png}
+ \end{center}
+The bar chart depicts the mean percentage of children enrolled in school, differentiated by gender. It shows that the enrollment rate is marginally higher for females (58\%) compared to males (53\%).
+
+ \begin{center}
+      \includegraphics[scale=0.5]{school_gender_box.png}
+ \end{center}
+
+\end{document}
